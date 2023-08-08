@@ -3,5 +3,16 @@
 @tailwind utilities;
 
 .custom-bg {
-    @apply bg-slate-200
+    @apply bg-sky-100
 }
+
+
+.leaflet-container {
+        @apply w-full md:w-[600px] h-[30vh] shadow-lg rounded my-10 ;
+      }
+
+
+.leaflet-popup-content-wrapper {
+    @apply bg-slate-100;
+}
+

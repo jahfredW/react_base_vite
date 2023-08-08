@@ -8,7 +8,7 @@ class OpenWeatherMap {
      * @returns {Array} data : coord of a city 
      */
     static async geocoding(city){
-        let url = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${OpenWeatherMap.API_KEY}`
+        let url = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${OpenWeatherMap.API_KEY}`
 
         try {
             const response = await fetch(url);
@@ -28,7 +28,7 @@ class OpenWeatherMap {
     }
 
     static async pollutionInstant(lat, lon){
-        let url = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${OpenWeatherMap.API_KEY}`
+        let url = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${OpenWeatherMap.API_KEY}`
 
         try {
             const response = await fetch(url);

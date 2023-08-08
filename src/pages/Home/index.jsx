@@ -1,74 +1,65 @@
-// import{ useEffect, useState} from "react";
-// import L from "leaflet";
+import{ useEffect, useState} from "react";
+import PollutionMap from "../../components/Maps/PollutionMap";
+import DailyForm from "../../components/Forms/DailyForm";
+import InstantReport from "../Pollution/InstantReport";
 
-// function Home() {
 
-//   const [lat, setLat] = useState(null);
-//   const [long, setLong] = useState(null);
 
-//   useEffect(() => {
-//   navigator.geolocation.getCurrentPosition(function(position) {
-//     setLat(position.coords.latitude);
-//     setLong(position.coords.longitude);
-//   })
-// })
+function Home() {
 
-//   return (
-//     <>
-//     <h1 className="text-3xl font-bold underline text-center text-red-500">Bienvenue</h1> 
-//     <div>votre lattitude: { lat }</div>
-//     <div>votre lattitude: { long }</div>
-//     </>
-    
-//   );
-// }
+  const [lat, setLat] = useState(null);
+  const [long, setLong] = useState(null);
 
-// export default Home;
+  // stockage des coordonnées de la ville sélectionnée dans l'état de home : 
+  const [cityCoords, setCityCoords] = useState(null)
+  const [cityName, setCityName] = useState(null)
 
-import React, { useEffect, useState, useCallback } from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
+  const handleMapClick = (lat, lng) => {
+    // Traitez les coordonnées du clic ici
+    console.log('Latitude:', lat);
+    console.log('Longitude:', lng);
+  };
 
-function MapWithUserLocation() {
-  const [map, setMap] = useState(null);
-  
-
-  // Utiliser le useCallback pour définir successCallback
-  const successCallback = useCallback((position) => {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
-
-    // Créer la carte si elle n'existe pas déjà
-    if (!map) {
-      const mapInstance = L.map("map").setView([latitude, longitude], 13);
-      setMap(mapInstance);
-
-      // Ajouter une couche de tuile de carte (par exemple, OpenStreetMap)
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(mapInstance);
-
-      // Ajouter un marqueur pour la position de l'utilisateur
-      L.marker([latitude, longitude]).addTo(mapInstance);
-    }
-  }, [map]);
-
-  useEffect(() => {
-    // Récupérer la géolocalisation de l'utilisateur
-    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-  }, [successCallback]);
-
-  function errorCallback(error) {
-    console.error(`Error code: ${error.code}, Error message: ${error.message}`);
+  const handleCityLocation = (city, coords, cityName) => {
+    console.log(city);
+    console.log(coords);
+    console.log(cityName);
+    setCityCoords(coords)
+    setCityName(cityName);
   }
 
-  return (
-    <div className="bg-slate-100 h-max">
-      <div className="w-1/2 mx-auto shadow-lg rounded" id="map" style={{ height: "400px" }}></div>
-    </div>
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setLat(position.coords.latitude);
+      setLong(position.coords.longitude);
+  })
+}, [])
   
+
+  return (
+    <>
+    <div>
+        <DailyForm onVilleChange={ handleCityLocation} className="w-full"/>
+    </div>
+    <div className="container bg-sky-100 w-full md:w-1/2 mx-auto px-5">
+    
+    <div className="flex flex-col md:flex-row justify-between">
+        <div>
+          { lat  && <InstantReport city={ cityName } lat={cityCoords ? cityCoords.lat : lat} long={cityCoords ? cityCoords.lng : long} />}
+        </div>
+          { lat  && <PollutionMap lat={cityCoords ? cityCoords.lat : lat} long={cityCoords ? cityCoords.lng : long} onMapClick={handleMapClick} />}
+    </div>
+    </div>
+    
+      
+  
+    </>
+    
   );
 }
 
-export default MapWithUserLocation;
+export default Home;
+
 
 
 

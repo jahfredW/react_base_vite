@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Survey from './pages/Survey';
 import Meteo from './pages/Meteo';
 import Header from './components/Header'
+import Header2 from './components/Header2';
 import './index.css';       
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ClientForm from './components/Forms/ClientForm';
@@ -19,6 +20,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Router>
       <Header/>
+      <Header2/>
       <Routes>
         <Route path="/" element={<Home />}/>
         <Route path="/meteo" element={<Meteo />}/>
